@@ -1,0 +1,28 @@
+.box {
+		padding-top: 10px;
+}
+.nav {
+		border-bottom: 1px solid #EAEAEA;
+		padding-bottom: 8px;
+}
+.nav .selected {
+		color: #EE5C42;
+}
+.nav text {
+		hight: 100px  ;
+		font-size:16px;
+		padding-left: 70px;
+}
+.contentlist view{
+		padding-top: 10px; 
+		border-bottom: 1px solid #EAEAEA;
+		padding-bottom: 8px;
+}
+._span{
+		font-size: 14px;
+		padding-left: 18px;
+}
+
+
+
+

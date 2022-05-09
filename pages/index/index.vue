@@ -1,0 +1,253 @@
+<template>
+	<view class="big">
+		<view class="nav">
+			<view class="texts" :class="curr==0?'active':''" data-index="0" @tap="setCurr">
+				自建
+			</view>
+			<view class="texts" :class="curr==1?'active':''" data-index="1" @tap="setCurr">
+				接收
+			</view>
+			<view class="texts" :class="curr==2?'active':''" data-index="2" @tap="setCurr">
+				查询
+			</view>
+		</view>
+		<swiper style="height: 100vh;" :current="curr" @change="setCurr">
+			<swiper-item>
+				<scroll-view>
+					<view class="contentlist">
+						<view  @click="jumpBuildTask">
+							<span class="iconfont icon-111111111"></span>
+							<span>按计划自建任务</span>
+							<span class="iconfont icon-zuojiantou-cu"></span>
+						</view>
+						<view @click="jumpAddTest">
+							<span class="iconfont icon-shenpizuguanli"></span>
+							<span>补充测试项</span>
+							<span class="iconfont icon-zuojiantou-cu"></span>
+						</view>
+						<view @click="jumpMismatchTask">
+							<span class="iconfont icon-zixunguanli"></span>
+							<span>处理消防设施与当前测试规范不匹配</span>
+							<span class="iconfont icon-zuojiantou-cu"></span>
+						</view>
+						<view @click="jumpUnsubmitTask">
+							<span class="iconfont icon-jianhao"></span>
+							<span>管理未提交任务</span>
+							<span class="iconfont icon-zuojiantou-cu"></span>
+						</view>
+						
+					</view>
+				</scroll-view>
+			</swiper-item>
+			<swiper-item>
+				<scroll-view>
+					<view class="receive">暂未收到下发计划</view>
+				</scroll-view>
+			</swiper-item>	
+			<swiper-item>
+				<scroll-view>
+					<view >
+						<view class="date">
+							<uni-datetime-picker v-model="range" type="daterange" rangeSeparator="至" @change="onDateChange" />
+						</view>
+						
+						<button @click="inquire">查询</button>
+						
+					</view>
+					<view class="content" v-for="(item,index) in dataArr" @click="jumpSubmitPlan(item.taskId)" :key="item.taskId">
+						<view>
+							<text>项目名称</text>
+							<text>{{item.projectName}}</text>
+						</view>
+						<view>
+							<text>提交时间</text>
+							<text>{{item.submitTime}}</text>
+						</view>
+						<view>
+							<text>审核状态</text>
+							<text>{{item.auditResult}}</text>
+						</view>
+					</view>
+					
+					
+				</scroll-view>
+			</swiper-item>			
+		</swiper>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+				return {
+					curr:0,
+					range: [],
+					startDate: '',
+					endDate: '',
+					dataArr:[],
+				};
+			
+			
+		},
+		onShow(){
+			this.getData()
+		},
+		methods: {
+			//获取提交任务接口数据
+			async getData(){
+				const res = await this.$myRequest({
+					url:'/ntda/task/getDidTask?tenantId='+getApp().globalData.tenantId + '&staffId='+ getApp().globalData.staffId
+				})
+				console.log(res.data)
+				this.dataArr = res.data.plans
+				
+				
+			},
+			setCurr(e) {
+			// console.log(e.detail.current)
+			let thisCurr = e.detail.current || e.currentTarget.dataset.index || 0;
+			// console.log(thisCurr)
+			this.curr = thisCurr;
+			},
+			jumpBuildTask (){
+				uni.navigateTo ({
+					url: '/pages/selfBulidTask/selfBulidTask',
+				})
+			},
+			jumpAddTest(){
+				uni.navigateTo ({
+					url: '/pages/addTest/addTest',
+				})
+			},
+			jumpMismatchTask(){
+				uni.navigateTo ({
+					url: '/pages/mismatchTask/mismatchTask',
+				})
+			},
+			jumpUnsubmitTask(){
+				uni.navigateTo ({
+					url: '/pages/unsubmitTask/unsubmitTask',
+				})
+			},
+			jumpSubmitPlan(taskId){
+				uni.navigateTo ({
+					url: '/pages/index/submitPlan/submitPlan?id='+ taskId
+				})
+			},
+			inquire(){
+				console.log(this.startDate)
+				console.log(this.endDate)
+				this.$myRequest({
+					url:'/ntda/task/getTaskByCondition2',
+					method:'POST',
+					data:{
+						  "startTime": this.startDate,
+						  "endTime": this.endDate,
+						  "staffId": getApp().globalData.staffId
+					},
+				}).then((res)=>{
+					console.log(res.data)
+					this.dataArr = res.data.plans
+				})
+			},
+			onDateChange(e) {
+			setTimeout(() => {
+			this.startDate = this.range[0]
+			this.endDate = this.range[1]
+			})
+			}, 
+		}
+	}
+</script>
+
+<style>
+	.big{
+		background-color: #FCFCFC;
+	}
+	.nav{
+		background-color: white;
+		width: 100%;
+		color: #ABABAB;
+		overflow: auto;
+		border-bottom: 1px solid #EAEAEA;
+		padding-bottom: 8px;
+	}
+	.nav view{
+		text-align: center;
+		padding-left: 25upx;
+		width: 30%;
+		float: left;
+		margin-top: 10px;
+	}
+	.nav .texts.active{
+		color:  #FF8C00;
+	}
+	.contentlist view{
+		height: 30px;
+		background-color: white;
+		padding-top: 10px; 
+		border-bottom: 1px solid #EAEAEA;
+		padding-bottom: 8px;
+		
+		
+	}
+	
+	.contentlist view span:nth-child(1){
+		display: inline-block;
+		font-size: 18px;
+		padding-left: 18px;
+	
+	}
+	
+	.contentlist view span:nth-child(2){
+		display: inline-block;
+		height: 26px;
+		font-size: 16px;
+		margin: 4px 14px;
+	}
+	
+	.contentlist view span:nth-child(3){
+		font-size: 16px;
+		margin-top: 6px;
+	}
+	
+	
+	.receive {
+		text-align: center;
+		margin:100px;
+		color: #ABABAB;
+	}
+	.date {
+		float: left;
+		margin-left: 5px;
+		margin-top: 5px;
+		width: 280px;
+	}
+	button {
+		margin-top: 10px;
+		margin-right: 15px;
+		width:65px;
+		height:30px;
+		line-height:28px;
+		text-align:center;
+		float: right;
+		background-color:#FF7256;
+		color:white;
+		font-size: 15px;
+	}
+	.content {
+		border: 2px solid #ABABAB;
+		border-radius:10px ;
+		font-size: 13px;
+		margin: 5px 10px 5px 10px;
+		float:left;
+		width:350px;
+	}
+	.content view{
+		margin:5px;
+	}
+	.content text{
+		padding:5px;
+	}
+</style>
+
