@@ -32,76 +32,72 @@
 		        "enablePullDownRefresh": false
 		    }
 		    
-		}
-        
-        
-        ,{
-            "path" : "pages/addTest/addTest",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "新建任务",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/mismatchTask/mismatchTask",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "新建任务",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/unsubmitTask/unsubmitTask",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "管理员未提交任务",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/selfBulidTask/programDetail/programDetail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "2022年1月计划完成情况",
-                "enablePullDownRefresh": false,
-								"app-plus":{
-									"titleNView":{
-										"padding-right": "5px",
-										"buttons":[
-											{
-												"text":"全选",
-												
-												"fontSize":"13px"
-											}
-										]
-									}
-								}
-            }
-            
-        }
-        ,{
-            "path" : "pages/addTest/participants/participants",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "人员选择",
-                "enablePullDownRefresh": false,
-				"app-plus":{
-					"titleNView":{
-						"buttons":[
-							{
-								"text":"确定",
-								"float":"right",
-								"fontSize":"13px"
-							}
-						]
-					}
+		}   
+		,{
+				"path" : "pages/addTest/addTest",
+				"style" :                                                                                    
+				{
+						"navigationBarTitleText": "新建任务",
+						"enablePullDownRefresh": false
 				}
-            }
-            
+				
+		}
+		,{
+				"path" : "pages/mismatchTask/mismatchTask",
+				"style" :                                                                                    
+				{
+						"navigationBarTitleText": "新建任务",
+						"enablePullDownRefresh": false
+				}
+				
+		}
+		,{
+				"path" : "pages/unsubmitTask/unsubmitTask",
+				"style" :                                                                                    
+				{
+						"navigationBarTitleText": "管理员未提交任务",
+						"enablePullDownRefresh": false
+				}
+				
+		}
+		,{
+				"path" : "pages/selfBulidTask/programDetail/programDetail",
+				"style" :                                                                                    
+				{
+					"navigationBarTitleText": "2022年1月计划完成情况",
+					"enablePullDownRefresh": false,
+					"app-plus":{
+						"titleNView":{
+							"padding-right": "5px",
+							"buttons":[
+								{
+									"text":"全选",
+									
+									"fontSize":"13px"
+								}
+							]
+						}
+					}
+				}       
+			}
+			,{
+					"path" : "pages/addTest/participants/participants",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "人员选择",
+						"enablePullDownRefresh": false,
+						"app-plus":{
+							"titleNView":{
+								"buttons":[
+									{
+										"text":"确定",
+										"float":"right",
+										"fontSize":"13px"
+									}
+								]
+							}
+						}
+          }    
         }
         ,{
             "path" : "pages/unsubmitTask/modify/modify",
@@ -134,23 +130,23 @@
             "path" : "pages/apply/worklog/worklog",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "工作日志",
-                "enablePullDownRefresh": false,
-				"app-plus":{
-					"titleNView":{
-						"buttons":[
-							{
-								"text":"新建",
-								"float":"right",
-								"fontSize":"13px",
-								"margin-right":"10px"
+							"navigationBarTitleText": "工作日志",
+							"enablePullDownRefresh": false,
+							"app-plus":{
+								"titleNView":{
+									"buttons":[
+										{
+											"text":"新建",
+											"float":"right",
+											"fontSize":"13px",
+											"margin-right":"10px"
+										}
+									]
 							}
-						]
-					}
-				}
+						}
             }
             
-        }
+					}
         ,{
             "path" : "pages/selfBulidTask/programDetail/newTask/newTask",
             "style" :                                                                                    
@@ -193,19 +189,18 @@
             {
                 "navigationBarTitleText": "人员选择",
                 "enablePullDownRefresh": false,
-				"app-plus":{
-					"titleNView":{
-						"buttons":[
-							{
-								"text":"确定",
-								"float":"right",
-								"fontSize":"13px"
-							}
-						]
-					}
-				}
-            }
-            
+								"app-plus":{
+									"titleNView":{
+										"buttons":[
+											{
+												"text":"确定",
+												"float":"right",
+												"fontSize":"13px"
+											}
+										]
+									}
+								}
+            }  
         }
         ,{
             "path" : "pages/addTest/buildTask/buildTask",
@@ -225,6 +220,42 @@
                 		]
                 	}
                 }
+            }
+            
+        }
+        ,{
+            "path" : "pages/maintenanceTask/maintenanceTask",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "所有任务",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/maintenanceTask/mainTaskDetail/mainTaskDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "任务详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/maintenanceTask/tasksInfo/tasksInfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "执行任务",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/unsubmitTask/modify/options/multiSelect/multiSelect",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "批量测试任务",
+                "enablePullDownRefresh": false
             }
             
         }
@@ -259,5 +290,12 @@
 			}
 			
 		]
-	}
+	},
+	"easycom": {
+	 "autoscan": true,
+	 "custom": {
+	    "^cc-(.*)": "cc-ui-uni-app/components/cc-$1/cc-$1.vue"
+	 }
+	} 
+
 }

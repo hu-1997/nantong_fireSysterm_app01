@@ -41,22 +41,9 @@
 							</view>	
 						</view>
 						
-						<view v-show="failRemark">
-							<view>请描述不符合的原因</view>
-							<input  type="text" placeholder="请输入文本" @input="(e) => inputChange1(e,'remark')" :value="remark"/>
-						</view>
-						
 						<view style="margin: 2px;">上传照片</view>
 						<view v-show="ifCheck">
 						    <form class="Box">
-						       <!-- <view class="cu-bar bg-white margin-top">
-						            <view class="action">
-						                图片上传
-						            </view>
-						            <view class="action">
-						                {{imgList.length}}/4
-						            </view>
-						        </view> -->
 						        <view class="cu-form-group">
 						            <view class="grid col-4 grid-square flex-sub">
 						                <view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
@@ -69,11 +56,14 @@
 						                    <text class='cuIcon-cameraadd'></text>
 						                </view>
 						            </view>
-						        </view>
-						        
+						        </view>   
 						    </form>
-								
 						</view>
+						<view v-show="failRemark">
+							<view>请描述不符合的原因</view>
+							<input  type="text" placeholder="请输入文本" @input="(e) => inputChange1(e,'remark')" :value="remark"/>
+						</view>
+						
 						<!-- 第二版上传照片结束 -->
 						<view class="notCheck" v-show="notCheck">
 							<view>
@@ -107,7 +97,15 @@
 				</view>
 			</form>		
 		</view>
-		
+		<!-- 弹窗 -->
+		<view>
+			<!-- 提示窗示例 -->
+			<uni-popup ref="alertDialog" type="dialog">
+				<uni-popup-dialog :type="message" cancelText="取消" confirmText="确认" title="确认提交数据"
+				 @confirm="dialogConfirm" @close="dialogClose">
+				</uni-popup-dialog>
+			</uni-popup>
+		</view>
 		
 	</view>
 </template>
@@ -140,7 +138,8 @@
 				type:'center',
 				failRemark:false,
 				remark:'',
-				deviceSign:''
+				deviceSign:'',
+				equipmentCode:[],
 			}
 		},
 		onLoad(options) {
@@ -148,10 +147,9 @@
 			this.entryPageTime = timeStr
 			this.maintenanceId = options.id
 			this.taskId = options.taskId
-			this.deviceSign = options.deviceSign
+			this.equipmentCode = options.deviceSign.split(".")
+			this.deviceSign = options.deviceSign.split(".")[0]
 			this.getRecordData()
-			// this.getData()
-			// this.getRecordData()
 		},
 		methods: {
 			inputChange(e,index){
@@ -196,45 +194,57 @@
 				}
 				
 			},
+			//上传
+			async commitData(value1,value2){
+				var timeStr = getDateTime.dateTimeStr('y-m-d h:i:s'); // y:年 m:月 d:日 h:时 i:分 s:秒 中间的分割符号可更改
+				this.submitTime = timeStr
+				const res = await this.$myRequest({
+					url:'/ntda/detectionRecord/addDetectionRecord',
+					method:'POST',
+					data:{
+						 "formdata": value1,
+						 "imgList": this.imgList,
+						 "maintenanceId":this.maintenanceId,
+						 "taskId":this.taskId,
+						 "staffId": getApp().globalData.staffId,
+						 "submitTime":this.submitTime,
+						 "entryPageTime":this.entryPageTime,
+						 "tenantId": getApp().globalData.tenantId,
+						 "remark": this.remark,
+						 "deviceSign":value2
+					},
+				})
+				return res.data
+			},
+			//遍历多个设备
+			async commitAllInfo(value){
+				let arr = []
+				for(let i = 0; i<this.equipmentCode.length;i++ ){
+					arr.push(await this.commitData(value,String(this.equipmentCode[i])))
+				}
+				return Promise.all(arr)
+			},
+			//提交
 			formSubmit: function(e) {
 					// console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
 					this.formdata = e.detail.value
-					// console.log(this.formdata)
-					var timeStr = getDateTime.dateTimeStr('y-m-d h:i:s'); // y:年 m:月 d:日 h:时 i:分 s:秒 中间的分割符号可更改
-					this.submitTime = timeStr
-					// console.log(this.entryPageTime)
-					this.$myRequest({
-						url:'/ntda/detectionRecord/addDetectionRecord',
-						method:'POST',
-						data:{
-							 "formdata": this.formdata,
-							 "imgList": this.imgList,
-							 "maintenanceId":this.maintenanceId,
-							 "taskId":this.taskId,
-							 "staffId": getApp().globalData.staffId,
-							 "submitTime":this.submitTime,
-							 "entryPageTime":this.entryPageTime,
-							 "tenantId": getApp().globalData.tenantId,
-							 "remark": this.remark,
-							 "deviceSign":String(this.deviceSign)
-						},
-					}).then((res)=>{
-						console.log(res)
-						uni.showToast({
-								title: '提交成功',
-								icon:'none',
-								duration: 2000,
-								success: (res) => {
-									setTimeout(function(){
-										uni.navigateBack({})
-									},2000)
-								}
-						}
-						)	
-					})
-					
+					this.$refs.alertDialog.open()
 			},
-			
+			//关闭弹窗
+			dialogClose(){
+				console.log('点击关闭')
+			},
+			//确认
+			dialogConfirm(){
+				uni.showLoading({
+					title: '上传中'
+				})
+				this.commitAllInfo(this.formdata).then(res => {
+					console.log(res)
+					uni.hideLoading()
+					uni.navigateBack();
+				})
+			},
 			//......第二版上传照片
 			ChooseImage() {
 			    uni.chooseImage({
@@ -242,13 +252,6 @@
 			        sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 			        sourceType: ['album','camera'], //从相册选择
 			        success: (res) => {
-			    //         if (this.imgList.length != 0) {
-			    //             this.imgList = this.imgList.concat(res.tempFilePaths)
-							// // console.log(this.imgList)
-			    //         } else {
-			    //             this.imgList = res.tempFilePaths
-			    //         }
-				        
 				        for(let i=0;i<res.tempFilePaths.length;i++){
 				            const tempFilePaths = res.tempFilePaths[i]
 										// console.log(tempFilePaths)
@@ -261,13 +264,10 @@
 												'fileId': getApp().globalData.staffId
 											},
 											success: function (uploadFileRes) {
-												_this.imgList.push(uploadFileRes.data)
-												
+												_this.imgList.push(uploadFileRes.data)		
 											}
 										});
-				        }   
-				           
-							   // console.log(_this.imgList)  
+				        }    
 			        }
 			    });
 			},
@@ -305,7 +305,6 @@
 				}else{
 					this.ifCheck = true
 					this.notCheck = false
-					
 				}
 			},
 			radioChange1(e){
@@ -324,7 +323,7 @@
 				}
 			}
 			
-		},
+		}
 	}
 </script>
 
@@ -366,7 +365,7 @@
 		  background-color:#F7F7F7 ;
 		  border-radius:5px;
 		  padding-left: 5px;
-		  height: 15px;
+		  height: 26px;
 		  font-size: 13px;
 	  }
 	  .radio text{

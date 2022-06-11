@@ -1,4 +1,5 @@
 <template>
+	<view>
 	<view class="box">
 		<view class="nav">
 			<view class="imgs">任务名称   
@@ -57,38 +58,43 @@
 						</view>
 						<view  v-for="(item3,index) in item2.facilities" :key="index" >
 							<view class="item3">
-								<view>设施名称   <span>{{item3.facilitiesName}}</span></view>
+								<view>设备名称   <span>{{item3.facilitiesName}}</span></view>
 								<view class="number_proportion"> 
-									<view>数量:<span>{{item3.count}} </span></view>  
+									<view>设备总数量:<span>{{item3.count}} </span></view>  
 									<view>抽检比例:<span>{{item3.checkProportion}}</span></view>
 								</view>
-								<view>
-										<view class="icon">
-											<text class="record2" v-if="item3.record2">未记录</text>
-											<text class="record1" v-if="item3.record1">已记录</text>
-											<view @click="modify(item3.subplanId)">
-												<uni-icons type="trash" size="18" color="#FF4500"></uni-icons>
-												<text>删除</text>
-											</view>
-											<view @click="jumpOptions(item3.subplanId,item3.taskId,item3)">
-												<uni-icons type="compose" size="18" color="#FF4500"></uni-icons>
-												<text>明细</text>
-											</view>
-										</view>
+								<view v-for="(items, index) in bulingsList" :key="items">
+									<view class="bulindsName">{{item3.location.split(",")[items] ? "建筑物名称:"+"&#12288;"+item3.location.split(",")[items]: null}}</view>
 								</view>
 							</view>
-							
+							<view>
+										<view class="icons">
+											<view class="icons_title">
+												<text class="record2" v-if="item3.record2">未记录</text>
+												<text class="record1" v-if="item3.record1">已记录</text>
+											</view>
+											<view @click="modify(item3.subplanId)" class="icons_view">
+												<view class="icon_left">
+													<image src="../../../static/icons/delete.png" style="width: 18px;height: 18px;"></image>
+												</view>
+												<view class="delete">删除</view>
+											</view>
+											<view @click="jumpOptions(item3.subplanId,item3.taskId,item3)" class="icons_view">
+												<view class="icon_left">
+													<image src="../../../static/icons/edit.png" style="width: 18px;height: 18px;"></image>
+												</view>
+												<view class="delete">明细</view>
+											</view>
+								</view>
+							</view>
 						</view>
 					</view>
-				</view>
-				
-				
-				
+				</view>		
 		</view>
-		<view class="btn">
-			<button @click="submitTask" type="default">提交</button>
-		</view>
-		
+	</view>
+	<view class="btn">
+		<button @click="submitTask" type="default">提交</button>
+	</view>
 	</view>
 </template>
 
@@ -100,15 +106,13 @@
 		},
 		onLoad(options) {
 			this.taskId = options.id
-			
-			
 		},
 		onShow(){
 			this.getData()
 		},
 		back() {
 				
-			},
+		},
 		data() {
 			return {
 				dataArr:[],
@@ -117,7 +121,8 @@
 				taskId:'',
 				ifSubmit:'',
 				submitImgList: [],
-				signImgList:[]
+				signImgList:[],
+				bulingsList:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 			}
 		},
 		methods: {
@@ -220,10 +225,10 @@
 			    });
 			},
 			ViewImage1(e) {
-			    uni.previewImage({
-			        urls: this.submitImgList,
-			        current: e.currentTarget.dataset.url
-			    });
+				uni.previewImage({
+					urls: this.submitImgList,
+					current: e.currentTarget.dataset.url
+				});
 			},
 			//删除
 			DelImg1(e) {
@@ -354,8 +359,8 @@
 		margin: 10px 5px 5px 5px ;
 		padding: 10px;
 		font-size: 15px;
-		border: 0.5px solid #FF8C69;
-		
+		border: 1px solid #FF8C69;
+		border-radius: 4px;
 	}
 	span{
 		font-size: 14px;
@@ -368,9 +373,9 @@
 		padding-bottom: 8px;
 	}
 	.item3{
-		margin-top: 5px;
+		margin: 5px 0;
 		border-bottom: 1px solid #CDC9C9;
-		padding-bottom: 8px;
+		/* padding-bottom: 8px; */
 	}
 	
 	.item3 view {
@@ -378,26 +383,59 @@
 	}
 	
 	.number_proportion{
-		width: 80%;
+		/* width: 80%; */
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		margin-bottom: 2px;
+	}
+	.number_proportion view{
+		width: 38%;
+	}
+	.item3 .bulindsName{
+		margin: 2px 0 4px 0;
 	}
 	
-	.icon view {
-		float: right;
-		color: #FF4500;
-		
+	.box .content .icons{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		border-bottom: 1px solid #CDC9C9;
 	}
-	.icon text{
-		
-		font-size: 14px;
+	.content .icons .icons_title{
+		width: 80%;
+		height: 30px;
+		line-height: 30px;
+		margin: 6px 0;
 	}
-	.record1 {
+	.content .icons .icons_title text{
+		font-size: 18px;
+	}
+	.content .icons .icons_view {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		width: 24%;
+		height: 30px;
+		margin: 4px 2%;
+	}
+	
+	.icons_view .icon_left{
+		line-height: 30px;
+		padding: 5px 0;
+	}
+	
+	.icons_view .delete{
+		font-size: 18px;
+		color:#FF4500;
+		line-height: 30px;
+		padding: 2px 0;
+	}
+	.content .icons .icons_title .record1 {
 		color: #008B00;
 	}
-	.record2 {
-		color: red;
+	.content .icons .icons_title .record2 {
+		color: #B22222;
 	}
 	.btn button {
 		  /* float: bottom;

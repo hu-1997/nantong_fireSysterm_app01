@@ -1,12 +1,6 @@
 <template>
 	<view >
-		<view >
-		<!-- 	<uni-collapse class="list" v-for="(item) in arr">
-				<uni-collapse-item :title="item.projectName" :open="true">
-					<view @click="jumpPlan(item.planId)" class="plan">{{item.planName}}</view>
-				</uni-collapse-item>
-				
-			</uni-collapse> -->
+		<view v-show="arr.length > 0 ? true : false">
 			<uni-collapse ref="collapse">
 				<view v-for="(item,index) in arr" :key="index">
 					<uni-collapse-item :title="item.projectName" :open="false" >
@@ -17,6 +11,7 @@
 				</view>
 			</uni-collapse>
 		</view>
+		<view v-show="arr.length > 0 ? false : true" class="noPlanMes">暂时没有计划</view>
 	</view>
 	
 </template>
@@ -33,7 +28,6 @@
 		},
 		methods: {
 			//获取接口数据
-			
 			async getData(){
 				const res = await this.$myRequest({
 					url:'/ntda/servicePlan/getAllServicePlan?staffId=' + getApp().globalData.staffId
@@ -45,7 +39,6 @@
 				uni.navigateTo ({
 					url: '/pages/selfBulidTask/programDetail/programDetail?planId=' + planId
 				})
-				
 			},
 			
 		}
@@ -72,6 +65,12 @@
 		color: #666;
 		line-height: 20px;
 		margin-left: 30px;
+	}
+	.noPlanMes{
+		width: 60%;
+		font-size: 20px;
+		text-align: center;
+		margin: 30px 20%;
 	}
 	
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<view class="big">
-		<view class="box" v-for="(item) in arr">
+		<view class="box" v-for="(item, index) in arr" :key="index">
 				<view >
 					项目名称   <span>{{item.projectName}}</span>	
 				</view>
@@ -11,19 +11,20 @@
 					创建时间   <span>{{item.createdTime}}</span>
 				</view>
 				<view class="icons">
-					<view @click="Delete(item.taskId)">
-						<uni-icons type="trash" size="18" color="#FF4500"></uni-icons>
-						<text class="delete">删除</text>
+					<view @click="Delete(item.taskId)" class="icons_view">
+						<view class="icon_left">
+							<image src="../../static/icons/delete.png" style="width: 18px;height: 18px;"></image>
+						</view>
+						<view class="delete">删除</view>
 					</view>
-					<view @click="jumpModify(item.taskId)">
-						<uni-icons type="compose" size="18" color="#FF4500"></uni-icons>
-						<text class="delete">修改</text>
+					<view @click="jumpModify(item.taskId)" class="icons_view">
+						<view class="icon_left">
+							<image src="../../static/icons/edit.png" style="width: 18px;height: 18px;"></image>
+						</view>
+						<view class="delete">修改</view>
 					</view>
-				</view>
-			
-		</view>
-		
-		
+				</view>		
+		</view>	
 	</view>
 </template>
 
@@ -105,13 +106,31 @@
 		font-size: 14px;
 		color:#515151;
 	}
-	.icons view{
-		float: right;
-		
+	.box .icons{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 44%;
+		padding: 0 4% 6px 52%;
 	}
-	.icons text{
-		font-size: 14px;
+	.box .icons_view {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		width: 40%;
+		height: 30px;
+		padding: 4px 0;
+	}
+	.icons_view .icon_left{
+		line-height: 30px;
+		padding: 5px 0;
+	}
+	
+	.icons_view .delete{
+		font-size: 18px;
 		color:#FF4500;
+		line-height: 30px;
+		padding: 2px 0;
 	}
 
 </style>

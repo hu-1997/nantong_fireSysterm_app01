@@ -14,28 +14,52 @@
 		<swiper style="height: 100vh;" :current="curr" @change="setCurr">
 			<swiper-item>
 				<scroll-view>
-					<view class="contentlist">
-						<view  @click="jumpBuildTask">
-							<span class="iconfont icon-111111111"></span>
-							<span>按计划自建任务</span>
-							<span class="iconfont icon-zuojiantou-cu"></span>
+					<view>
+						<view  @click="jumpBuildTask" class="contentlist_view">
+							<view  class="icon_left">
+								<image src="../../static/icons/task.png" style="width: 20px;height: 20px;"></image>
+							</view>
+							<view class="contentlist_view_title">按计划自建任务</view>
+							<view class="icon_right">
+								<image src="../../static/icons/right.png" style="width: 20px;height: 20px;"></image>
+							</view>
 						</view>
-						<view @click="jumpAddTest">
-							<span class="iconfont icon-shenpizuguanli"></span>
-							<span>补充测试项</span>
-							<span class="iconfont icon-zuojiantou-cu"></span>
+						<view @click="jumpAddTest" class="contentlist_view">
+							<view  class="icon_left">
+								<image src="../../static/icons/task2.png" style="width: 22px;height: 22px;"></image>
+							</view>
+							<view class="contentlist_view_title">补充测试项</view>
+							<view class="icon_right">
+								<image src="../../static/icons/right.png" style="width: 20px;height: 20px;"></image>
+							</view>
 						</view>
-						<view @click="jumpMismatchTask">
-							<span class="iconfont icon-zixunguanli"></span>
-							<span>处理消防设施与当前测试规范不匹配</span>
-							<span class="iconfont icon-zuojiantou-cu"></span>
+						<view @click="jumpMismatchTask" class="contentlist_view">
+							<view  class="icon_left">
+								<image src="../../static/icons/task3.png" style="width: 22px;height: 22px;"></image>
+							</view>
+							<view class="contentlist_view_title">处理消防设施与当前测试规范不匹配</view>
+							<view class="icon_right">
+								<image src="../../static/icons/right.png" style="width: 20px;height: 20px;"></image>
+							</view>
 						</view>
-						<view @click="jumpUnsubmitTask">
-							<span class="iconfont icon-jianhao"></span>
-							<span>管理未提交任务</span>
-							<span class="iconfont icon-zuojiantou-cu"></span>
+						<view @click="jumpUnsubmitTask" class="contentlist_view">
+							<view  class="icon_left">
+								<image src="../../static/icons/task4.png" style="width: 22px;height: 22px;"></image>
+							</view>
+							<view class="contentlist_view_title">管理未提交任务</view>
+							<view class="icon_right">
+								<image src="../../static/icons/right.png" style="width: 20px;height: 20px;"></image>
+							</view>
 						</view>
-						
+						<view @click="jumpMaintenanceTask" class="contentlist_view">
+							<view  class="icon_left">
+								<image src="../../static/icons/fixed.png" style="width: 22px;height: 22px;"></image>
+							</view>
+							<view class="contentlist_view_title">排查与维修任务管理</view>
+							<view class="icon_right">
+								<image src="../../static/icons/right.png" style="width: 20px;height: 20px;"></image>
+							</view>
+						</view>
 					</view>
 				</scroll-view>
 			</swiper-item>
@@ -90,7 +114,7 @@
 			
 		},
 		onShow(){
-			this.getData()
+			// this.getData()
 		},
 		methods: {
 			//获取提交任务接口数据
@@ -132,6 +156,11 @@
 			jumpSubmitPlan(taskId){
 				uni.navigateTo ({
 					url: '/pages/index/submitPlan/submitPlan?id='+ taskId
+				})
+			},
+			jumpMaintenanceTask(){
+				uni.navigateTo ({
+					url: '/pages/maintenanceTask/maintenanceTask'
 				})
 			},
 			inquire(){
@@ -180,35 +209,33 @@
 		margin-top: 10px;
 	}
 	.nav .texts.active{
-		color:  #FF8C00;
+		color: #FF8C00;
 	}
-	.contentlist view{
+	.contentlist_view{
+		display: flex;
+		flex-direction: row;
 		height: 30px;
+		line-height: 30px;
 		background-color: white;
 		padding-top: 10px; 
 		border-bottom: 1px solid #EAEAEA;
 		padding-bottom: 8px;
-		
-		
+	}
+	.contentlist_view .icon_left {
+		line-height: 30px;
+		padding: 4px 0px;
+		margin: 0 2% 0 4%;
 	}
 	
-	.contentlist view span:nth-child(1){
+	.contentlist_view .icon_right{
 		display: inline-block;
-		font-size: 18px;
-		padding-left: 18px;
-	
+		line-height: 30px;
+		padding: 3px 16px;
 	}
 	
-	.contentlist view span:nth-child(2){
-		display: inline-block;
-		height: 26px;
-		font-size: 16px;
-		margin: 4px 14px;
-	}
-	
-	.contentlist view span:nth-child(3){
-		font-size: 16px;
-		margin-top: 6px;
+	.contentlist_view .contentlist_view_title{
+		width: 64%;
+		margin: 0px 10% 0 0%;
 	}
 	
 	

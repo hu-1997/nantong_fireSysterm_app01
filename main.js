@@ -21,4 +21,8 @@ export function createApp() {
     app
   }
 }
+import ccUI from 'cc-ui-uni-app'
+
+Vue.use(ccUI)
+
 // #endif
