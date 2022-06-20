@@ -4,7 +4,7 @@
 			<uni-collapse ref="collapse">
 				<view v-for="(item,index) in arr" :key="index">
 					<uni-collapse-item :title="item.projectName" :open="false" >
-							<view class="content" @click="jumpPlan(item.planId)">
+							<view class="content" @click="jumpPlan(item)">
 								<text class="text">{{item.planName}}</text>
 							</view>
 						</uni-collapse-item>
@@ -35,9 +35,9 @@
 				console.log(res.data)
 				this.arr = res.data.result
 			},
-			jumpPlan(planId){
+			jumpPlan(value){
 				uni.navigateTo ({
-					url: '/pages/selfBulidTask/programDetail/programDetail?planId=' + planId
+					url: '/pages/selfBulidTask/programDetail/programDetail?planId=' + value.planId+"&planName="+value.planName
 				})
 			},
 			

@@ -88,12 +88,7 @@
 					
 				</view>
 				<view class="btn">
-					<view class="button1">
-						<button  form-type="submit">提交</button>
-					</view>
-					<!-- <view class="button2">
-						<button  type="default">添加下一个</button>
-					</view> -->
+					<button  form-type="submit">提交</button>
 				</view>
 			</form>		
 		</view>
@@ -372,38 +367,19 @@
 		  padding: 5px;
 		    
 	  }
-	  
-	 .button1 button {
-	 	   float: bottom;
-	 	   padding-bottom: 5px;
-	 	   background-color: #FF6347;
-	 	   color: white;
-	 	   text-align:center;
-	 	   height: 40px;
-	 	   width: 80px;
-	 	   border-radius:15px;
-	 	   position: fixed;
-	 	   font-size: 15px;
-	 	   line-height: 40px;
-	 	   bottom: 15px;
-	 	   left: 30px;
-	 }
-	 .button2 button {
-	 	   float: bottom;
-	 	   padding-bottom: 5px;
-	 	   background-color: #FF6347;
-	 	   color: white;
-	 	   text-align:center;
-	 	   height: 40px;
-	 	   width: 130px;
-	 	   border-radius:15px;
-	 	   position: fixed;
-	 	   right: 30px;
-	 	   bottom: 15px;
-		   font-size: 15px;
-		   line-height: 40px;
-	 	   
-	 }
+	  .btn {
+	  	/* position: fixed; */
+	  	width: 60%;
+	  	margin: 20px 20%;
+	  	/* bottom: 10px; */
+	  }
+	  .btn button {
+	   background-color: #FF6347;
+	   color: white;
+	   text-align:center;
+	   border-radius:10px;
+	  }
+	 
 	 textarea{
 		 background-color: #F7F7F7;
 		 padding: 10px;

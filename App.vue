@@ -1,7 +1,8 @@
 <script>
-	export default {
-		globalData: { 
-		  tenantId: "6ce413e5affb31dbfc7d5e529e1c427f" ,
+	export default {	
+globalData: { 
+			tenantName: "测试机构名4",
+		  tenantId: "6ce413e5affb31dbfc7d5e529e1c427f",
 			staffId: "c6443d50f719a54229bd7f87b871503c"
 		}, 
 		onLaunch: function() {
@@ -44,4 +45,14 @@
 		 /* uni-radio .uni-radio-input.uni-radio-input-checked::before{
 			display: none!important;
 		} */
+		.image-bg {
+		    position: absolute;
+		    z-index: -1;
+		    left: 0;
+		    right: 0;
+		    bottom: 0;
+		    right: 0;
+		    width: 100%;
+		    height: 100%;
+		}
 </style>

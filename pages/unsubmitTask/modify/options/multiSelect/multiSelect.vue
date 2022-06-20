@@ -11,7 +11,7 @@
 				<view class="equipment_title">
 						<view class="equipment_title_left">设备{{item1.equNumber}}</view>
 				</view>
-				<view v-for="(item2) in item1.facilitiesDetail" class="content" @click="jumpOptionDetail(item2.maintenanceId,item2.taskId,item1.equNumber)" :key="item2.maintenanceId">
+				<view v-for="(item2) in item1.facilitiesDetail" class="content" @click="jumpOptionDetail(item2.maintenanceId,item2.taskId)" :key="item2.maintenanceId">
 					<view>
 						{{item2.maintenanceName}}
 					</view>
@@ -58,7 +58,7 @@
 		onShow(){
 			this.equipmentCount = []
 			this.getInitData().then(res => {
-				console.log(res,4334)
+				// console.log(res,4334)
 				this.equipmentCount = res
 			})
 		},
@@ -71,7 +71,7 @@
 					const res = await this.$myRequest({
 					url:'/ntda/task/getFacilitiesDetail?id=' + this.subplanId + '&taskId=' + this.taskId + '&deviceSign='+key
 				})
-				res.data['equNumber'] = this.equipmentCode.join("/")
+				res.data['equNumber'] = this.equipmentCode[0]+'-'+this.equipmentCode[this.equipmentCode.length-1]
 				return res.data
 			},
 			
@@ -85,7 +85,7 @@
 			},
 			
 			jumpOptionDetail(maintenanceId,taskId,id){
-				let equipmentCode = id.split("/").join(".")
+				let equipmentCode = this.equipmentCode.join(".")
 				uni.navigateTo({
 					url: '/pages/unsubmitTask/modify/options/optionDetail/optionDetail?id='+maintenanceId +'&taskId='+taskId+'&deviceSign='+equipmentCode
 				})
@@ -109,7 +109,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		margin: 10px 5%;
+		margin: 10px 2%;
 	}
 	.equipment_title_left{
 		width: 30%;
@@ -123,6 +123,7 @@
     .nav text{
 		padding-left: 13px;
 		font-size: 14px;
+		line-height: 21px;
 	}
 	
 	.content view{

@@ -2,12 +2,9 @@
 	<view class="Box">
 		<view class="nav">
 				<view class="search">
-					<input type="text" placeholder="请输入人员名称">
+					<input type="text" placeholder="请输入人员名称" @input="getInputValue">
 				</view>	
-				<button type="default">查询</button>
-				
-				
-					
+				<button type="default" @click="getSearchData">查询</button>	
 		</view>
 		<view class="option">
 			<checkbox-group v-for="(item,index) in dataArr" @change="checkboxChange" :key="index">
@@ -16,13 +13,7 @@
 						<view>{{'ID:'+item.account + '-'+item.name}} <checkbox :value="item.name+'/'+item.staffId" /></view>
 				</label>
 			</checkbox-group>
-			
-			
-				
 		</view>
-		
-		
-		
 	</view>
 </template>
 
@@ -32,8 +23,8 @@
 			return {
 				w:[],
 				ab:'',
-				dataArr:[
-				]
+				dataArr:[],
+				searchName:''
 			}
 		},
 		onLoad(options){
@@ -43,7 +34,6 @@
 			//获取接口数据
 			async getData(){
 				const res = await this.$myRequest({
-					// url:'/ntda/staff/getAllStaffByTenant?tenantId=' + getApp().globalData.tenantId
 					url: '/ntda/staff/getAllHasAccountStaff/',
 					method: 'post',
 					data:{
@@ -53,12 +43,27 @@
 				// console.log(res.data)
 				this.dataArr = res.data.result
 			},
+			getInputValue(e){
+				this.searchName = e.detail.value
+			},
+			//搜索
+			getSearchData(){
+				this.$myRequest({
+					url: '/ntda/staff/getStaffByCondition/',
+					method: 'post',
+					data:{
+						"ifHasTenant": 'true',
+						"name": this.searchName,
+						"tenantName":getApp().globalData['tenantName']
+					}
+				}).then(res => {
+					// console.log(res.data)
+					this.dataArr = res.data.result
+				})
+			},
 			checkboxChange(e) {
 				this.w.push(e.detail.value)
-				this.ab=this.w.join(",")
-				// console.log(this.w)
-				// console.log(this.ab)
-				
+				this.ab=this.w.join(",")	
 			},
 			onNavigationBarButtonTap(e){
 				uni.$emit('fire', {
@@ -74,25 +79,23 @@
 </script>
 
 <style>
-	 .search input{
+	.search input{
 		width: 270px;
-		border: 0.5px solid #FF8C69;
+		border: 0.5px solid #EE5C42;
 		padding:5px;
 		font-size: 13px;
 		float: left;
-		
+		border-radius: 4px;
 	}
 	.nav {
 		margin: 10px ;
 	}
-	
-   
   .option view{
 	  padding-top: 10px ;
 	  padding-left: 15px ;
 	  font-size: 14px;
   }
-  button {
+  .nav button {
 	  width: 58px;
 	  height: 30px;
 	  font-size: 14px;
@@ -100,6 +103,8 @@
 	  vertical-align: middle;
 	  line-height: 27.5px;
 	  margin-right:5px; 
+		color: white;
+		background-color:#EE5C42 ;
   }
   .option checkbox {
 	  float: right;

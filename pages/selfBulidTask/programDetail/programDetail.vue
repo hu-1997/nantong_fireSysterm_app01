@@ -121,32 +121,16 @@
 	export default {
 		//全选按钮
 		onNavigationBarButtonTap(e){
-			// this.value= this.arr1.facilitiesId
 			this.checkAll = !this.checkAll
-			// var pages = getCurrentPages();
-			// var page = pages[pages.length - 1];
-			// var currentWebview = page.$getAppWebview();
-			// console.log(currentWebview)
-			// var tn = currentWebview.getStyle().titleNView;
-			// if(this.curr == 1){
-			// 				tn.buttons[0].text = '全选';
-			// 				currentWebview.setStyle({
-			// 				    titleNView: tn
-			// 				});
-			// 				this.flag=false
-			// 				// this.checkbox=true
-			// 			}else{
-			// 				tn.buttons[0].text = '管理';
-			// 				currentWebview.setStyle({
-			// 				    titleNView: tn
-			// 				});
-			// 				this.flag=true
-			// 				// this.checkbox=false
-			// 			}
 		},
 		onLoad(options) {
 			this.planId = options.planId
 			this.getData()
+			if(options.planId){
+				uni.setNavigationBarTitle({
+					title: String(options.planName)
+				})
+			}
 		},
 		
 		data() {
@@ -192,38 +176,17 @@
 					var a = me.ab.indexOf(id)
 					me.ab.splice(a,1)
 				}
-						// console.log(e.detail.value)
-				// this.checkedArr = []
-				// var checked = []
-				// var _this = this
-				// checked = e.detail.value;
-				// checked.map(function(item3) {
-				// _this.checkedArr.push(JSON.parse(item3))
-				// })
-				// console.log(this.checkboxArr)
-				// console.log(e.detail.value)
-				// this.namesel=e.detail.value;
-				// this.checkedArr=this.namesel.join(",")
-				// this.ab.push(this.checkedArr)
-				// console.log(this.ab)
-				// console.log(this.checkedArr)
-				// console.log('复选框的值：',this.namesel);
-				// console.log(e.detail.value.length)
-				// for(let i = 0; i < e.detail.value.length; i++){
-				// 	if(i === e.detail.value.length - 1){
-				// 		// console.log(this.ab.indexOf(e.detail.value[i]))
-				// 		this.ab.push(e.detail.value[i])
-				// 	}
-				// }
-				// console.log(this.ab)
-				this.w = this.ab.join(",")
+				this.w = this.ab.join(",")	
 				// console.log(this.w)
-				
 			},
-					
-		submit(e){
-			
-			if( this.w != '' || this.checkAll == true ) {
+			handleData(){
+				var newArrayId = []
+				this.arr1.forEach(item => {
+					newArrayId.push(item.subsystems[0].facilities[0]['subplanId'])
+				})
+				return newArrayId
+			},
+			submit(e){
 				if (this.w != ''){
 					//新建维保内容并发送数据
 					// console.log(this.planId)
@@ -243,37 +206,35 @@
 							url: '/pages/selfBulidTask/programDetail/newTask/newTask?id='+ taskid
 						})
 					})
-					
 				}
-				if( this.checkAll == true ) {
-					// console.log(this.planId)
+				if( this.checkAll === true ) {
+					var allCheckedPlanId = this.handleData()
+					// console.log(allCheckedPlanId)
 					//全选维保内容发送数据
 					this.$myRequest({
 						url:'/ntda/task/updateSubPlans',
 						method:'POST',
 						data:{
-							"formId": "selectAll",
+							"formId": allCheckedPlanId.join(","),
 							"completeStatus": "执行中",
 							 "planId": this.planId,
 							 "tenantId": getApp().globalData.tenantId,
 							 "staffId": getApp().globalData.staffId
 						},
-					})
-					.then((res) =>{
+					}).then((res) =>{
 						var taskid = res.data
 						uni.navigateTo ({
 							url: '/pages/selfBulidTask/programDetail/newTask/newTask?id='+ taskid
 							})
-						})
-					}		 		
-				}else{
+					})
+				} else{
 					uni.showToast({
 							title: '请选择',
 						icon:'none',
 							duration: 2000
 					})	
-				}	
-			},	
+				}
+			}
 		}
 	}
 </script>
@@ -411,7 +372,7 @@
 			bottom: 105px;
 			left */: 5px;	
 			margin: 2% 10%;
-			bottom: 10px;
+			bottom: 20px;
 		}
 		.button_hide{
 			height: 0;

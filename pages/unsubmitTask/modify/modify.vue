@@ -393,7 +393,7 @@
 		width: 38%;
 	}
 	.item3 .bulindsName{
-		margin: 2px 0 4px 0;
+		margin: 2px 0 4px 1px;
 	}
 	
 	.box .content .icons{
@@ -437,21 +437,17 @@
 	.content .icons .icons_title .record2 {
 		color: #B22222;
 	}
+	.btn {
+		position: fixed;
+		width: 80%;
+		margin: 0 10%;
+		bottom: 20px;
+	}
 	.btn button {
-		  /* float: bottom;
-		   pad */ding-bottom: 5px;
-		   background-color: #FF6347;
-		   color: white;
-		   text-align:center;
-		  /* height: 40px;
-		   width: 320px;
-		   left: 30px;
-		   bottom: 10px; */
-		   border-radius:10px;
-		   position: fixed;
-		   width: 80%;
-			 margin: 0 8%;
-			 bottom: 10px;
+	 background-color: #FF6347;
+	 color: white;
+	 text-align:center;
+	 border-radius:10px;
 	}
 	
 	

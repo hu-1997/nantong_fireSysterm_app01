@@ -70,13 +70,11 @@
 			</swiper-item>	
 			<swiper-item>
 				<scroll-view>
-					<view >
+					<view class="date_input">
 						<view class="date">
 							<uni-datetime-picker v-model="range" type="daterange" rangeSeparator="至" @change="onDateChange" />
 						</view>
-						
 						<button @click="inquire">查询</button>
-						
 					</view>
 					<view class="content" v-for="(item,index) in dataArr" @click="jumpSubmitPlan(item.taskId)" :key="item.taskId">
 						<view>
@@ -244,23 +242,25 @@
 		margin:100px;
 		color: #ABABAB;
 	}
-	.date {
-		float: left;
-		margin-left: 5px;
-		margin-top: 5px;
-		width: 280px;
+	.date_input{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 96%;
+		margin: 10px 2%;
 	}
-	button {
-		margin-top: 10px;
-		margin-right: 15px;
-		width:65px;
-		height:30px;
-		line-height:28px;
+	.date_input .date {
+		width: 82%;
+		/* height: 32px; */
+	}
+	.date_input button {	
+		display: block;
+		width: 16%;
+		line-height: 40px;
 		text-align:center;
-		float: right;
 		background-color:#FF7256;
 		color:white;
-		font-size: 15px;
+		font-size: 16px;
 	}
 	.content {
 		border: 2px solid #ABABAB;
